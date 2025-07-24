@@ -1,0 +1,16 @@
+{% extends 'Projeto/base.html' %}
+{% load static %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block content %}
+    <h2>Redefinir sua senha</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Nova senha:</label><br>
+        <input type="password" name="senha" required><br><br>
+        <label>Confirmar nova senha:</label><br>
+        <input type="password" name="senha_confirmar" required><br><br>
+        <input type="submit" value="Redefinir Senha">
+    </form>
+{% endblock %}

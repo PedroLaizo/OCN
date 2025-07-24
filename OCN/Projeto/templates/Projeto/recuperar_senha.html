@@ -1,0 +1,64 @@
+{% extends 'Projeto/base.html' %}
+{% load static %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block content %}
+    <h1>Recuperar Senha</h1>
+
+    {% if messages %}
+        <ul style="color: red;">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="email">Email:</label>
+        <input type="email" name="email">
+
+        <br><br>
+        <div style="margin-top: 15px;">
+            <button type="submit" style="display: inline-block;">Recuperar</button>
+            <a href="{% url 'login' %}" style="display: inline-block; margin-left: 10px;">Voltar</a>
+        </div>
+    </form>
+
+<script>
+    function enviarCadastro(event) {
+        event.preventDefault();  // Impede o envio tradicional do formulário
+
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        const data = {
+            email: document.querySelector('[name=email]').value,
+        };
+
+        fetch("{% url 'recuperar_senha' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            alert(result.message);
+            if (result.success) {
+                window.location.href = "{% url 'login' %}";
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert("Erro ao enviar os dados.");
+        });
+    }
+
+    // Substitui o submit padrão pelo envio via JS
+    document.querySelector('form').addEventListener('submit', enviarCadastro);
+</script>
+{% endblock %}

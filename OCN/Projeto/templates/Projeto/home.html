@@ -1,0 +1,38 @@
+{% extends 'Projeto/base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <h1>Bem-vindo, {{ tipo }} {{ nome }}!</h1>
+
+    <ul>
+        {% for acao in acoes %}
+            {% if acao == 'Editar Perfil' %}
+                <li><a href="{% url 'editar_perfil' %}" class="btn">Editar Perfil</a></li>
+            {% elif acao == 'Apagar Perfil' %}
+                <li><a href="{% url 'deletar_perfil' %}" class="btn">Apagar Perfil</a></li>
+            {% elif acao == 'Cadastrar Local' %}
+                <li><a href="{% url 'cadastro_local' %}" class="btn">Cadastrar Local</a></li>
+            {% elif acao == 'Cadastrar Serviços' %}
+                <li><a href="{% url 'cadastro_servicos' %}" class="btn">Cadastrar Serviços</a></li>
+            {% elif acao == 'Cadastrar Horarios' %}
+                <li><a href="{% url 'cadastro_horarios' %}" class="btn">Cadastrar Horarios</a></li>
+            {% elif acao == 'Editar Local' %}
+                <li><a href="{% url 'editar_local' %}" class="btn">Editar Local</a></li>
+            {% elif acao == 'Apagar Local' %}
+                <li><a href="{% url 'apagar_local' %}" class="btn">Apagar Local</a></li>
+            {% elif acao == 'Inserir Agendamento' %}
+                <li><a href="{% url 'inserir_agendamento' %}" class="btn">Inserir Agendamento</a></li>
+            {% elif acao == 'Ver Agendamentos' %}
+                <li><a href="{% url 'ver_agendamentos' %}" class="btn">Ver Agendamentos</a></li>
+            {% elif acao == 'Gerenciar Agenda' %}
+                <li><a href="{% url 'gerenciar_agenda' %}" class="btn">Gerenciar Agenda</a></li>
+            {% else %}
+                <li>{{ acao }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'logout' %}">Sair</a>
+{% endblock %}

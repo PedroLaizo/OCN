@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserir Agendamento</title>
+</head>
+<body> 
+    {% if messages %}
+        <ul style="color: red;">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Inserir Agendamento</h2>
+        <form method="post" action="{% url 'inserir_agendamento' %}">
+            {% csrf_token %}
+            
+            <label>Barbeiro:</label>
+            <select name="nome_barbeiro">
+                        <option value="">Selecione</option>
+                        {% for barbeiro in barbeiros_lista %}
+                            <option value="{{ barbeiro.id.id }}">{{ barbeiro.nome }}</option>
+                        {% endfor %}
+            </select><br><br>
+
+            <label>Serviço:</label>
+            <select name="id_servico">
+                        <option value="">Selecione</option>
+                        {% for servico in servico_lista %}
+                            <option value="{{ servico.id }}">{{ servico.nome }}</option>
+                        {% endfor %}
+            </select><br><br>
+
+            <label>Data:</label>
+            <input type="date" name="data_agendamento"><br><br>
+            
+            <label>Horario:</label>
+            <input type="time" name="horario_agendamento"><br><br>
+
+            <br><button type="submit">Inserir Agendamento</button>
+            <br><a href="{% url 'home' %}">Voltar</a>
+        </form>
+
+        <script>
+            function enviarAgendamento(event) {
+                event.preventDefault();
+
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                const data = {
+                    barbeiro_nome: document.querySelector('[name=nome_barbeiro]').value,  // Isso é o ID do barbeiro
+                    servico_id: document.querySelector('[name=id_servico]').value,
+                    data_agendamento: document.querySelector('[name=data_agendamento]').value,
+                    horario_agendamento: document.querySelector('[name=horario_agendamento]').value,
+                };
+
+                fetch("{% url 'inserir_agendamento' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log("Resultado da resposta:", result);  // Log do que a resposta contém
+                    alert(result.message);
+                    if (result.success) {
+                        window.location.href = result.redirect_url || "{% url 'home' %}";
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert("Erro ao enviar os dados.");
+                });
+            }
+
+            document.querySelector('form').addEventListener('submit', enviarAgendamento);
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,178 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo geral */
+body {
+    font-family: 'Georgia', serif;
+    background: #A28F9D;
+    color: #5C574F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Container principal */
+form {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #5C574F;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #5C574F;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border 0.2s;
+}
+
+input:focus, select:focus {
+    border-color: #44A1A0;
+    outline: none;
+}
+
+/* Botões */
+button {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #F96900;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #d85d00;
+}
+
+/* Links */
+a {
+    display: block;
+    margin-top: 10px;
+    color: #7F2CCB;
+    text-align: center;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Mensagens de erro */
+ul {
+    list-style: none;
+    margin-bottom: 15px;
+    padding: 0;
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Responsivo */
+@media (max-width: 500px) {
+    form {
+        padding: 20px;
+    }
+}
+
+/* Botão Google */
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Alinhamento horizontal dos botões de Login */
+.d-flex {
+    display: flex;
+    justify-content: space-between;  /* Coloca os botões à esquerda e à direita */
+    width: 100%;
+}
+
+/* Botão de Login */
+button {
+    width: 68%;  /* Reduz a largura para 48% para ajustar lado a lado */
+    background-color: #F96900;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #d85d00;
+}
+
+/* Botão de Login com Google */
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: #5C574F;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 14px;
+    width: 68%;  /* Reduz a largura para 48% para ajustar lado a lado */
+    text-decoration: none;
+}
+
+.google-btn img {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+}
+
+.google-btn:hover {
+    background-color: #f1f1f1;
+}
+
+.btn-custom {
+    background-color: #F96900;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-custom:hover {
+    background-color: #d85d00;
+}

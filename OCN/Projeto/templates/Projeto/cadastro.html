@@ -1,0 +1,92 @@
+{% extends 'Projeto/base.html' %}
+{% load static %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block content %}
+<!-- Container centralizado -->
+<div class="d-flex justify-content-center align-items-center">
+    <div class="p-4" style="width: 100%; max-width: 450px; background-color: white; border-radius: 8px; box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);">
+        <h3 class="text-center mb-4" style="color: #5C574F;">Cadastro de Usuário</h3>
+
+        <form method="post">
+            {% csrf_token %}
+            <label for="nome">Nome completo:</label>
+            <input type="text" name="nome" required>
+
+            <label for="data_nascimento">Data de Nascimento:</label>
+            <input type="date" name="data_nascimento">
+
+            <label for="cpf">CPF:</label>
+            <input type="text" name="cpf" maxlength="11" placeholder="Apenas números">
+
+            <label for="email">Email:</label>
+            <input type="email" name="email">
+
+            <label for="telefone">Telefone:</label>
+            <input type="tel" name="telefone">
+
+            <label for="cidade">Cidade:</label>
+            <input type="text" name="cidade">
+
+            <label for="tipo">Tipo:</label>
+            <select name="tipo" id="tipo" required>
+                <option value="">Selecione o tipo</option>
+                <option value="Cliente">Cliente</option>
+                <option value="Barbeiro">Barbeiro</option>
+            </select>
+
+            <label for="senha">Senha:</label>
+            <input type="password" name="senha" required>
+
+            <button type="submit" class="btn-custom w-100 mt-4">Cadastrar</button>
+
+            <div class="text-center mt-3">
+                <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-sm">Voltar para o Login</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    function enviarCadastro(event) {
+        event.preventDefault();
+
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        const data = {
+            nome: document.querySelector('[name=nome]').value,
+            data_nascimento: document.querySelector('[name=data_nascimento]').value,
+            cpf: document.querySelector('[name=cpf]').value,
+            email: document.querySelector('[name=email]').value,
+            telefone: document.querySelector('[name=telefone]').value,
+            cidade: document.querySelector('[name=cidade]').value,
+            tipo: document.querySelector('[name=tipo]').value,
+            senha: document.querySelector('[name=senha]').value
+        };
+
+        fetch("{% url 'cadastro' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            alert(result.message);
+            if (result.success) {
+                window.location.href = "{% url 'login' %}";
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert("Erro ao enviar os dados.");
+        });
+    }
+
+    document.querySelector('form').addEventListener('submit', enviarCadastro);
+</script>
+{% endblock %}

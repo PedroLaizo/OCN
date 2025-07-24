@@ -1,0 +1,83 @@
+{% extends 'Projeto/base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <h1>Cadastro de Usuário</h1>
+
+    {% if messages %}
+        <ul style="color: red;">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <label for="data_nascimento">Data de Nascimento:</label>
+        <input type="date" name="data_nascimento">
+
+        <label for="cpf">CPF:</label>
+        <input type="text" name="cpf" maxlength="11" placeholder="Apenas números">
+
+        <label for="telefone">Telefone:</label>
+        <input type="tel" name="telefone">
+
+        <label for="cidade">Cidade:</label>
+        <input type="text" name="cidade">
+
+        <label for="tipo">Tipo:</label>
+        <select name="tipo" id="tipo" required onchange="exibirCamposEspecificos()">
+            <option value="">Selecione o tipo</option>
+            <option value="Cliente">Cliente</option>
+            <option value="Barbeiro">Barbeiro</option>
+        </select>
+
+        <br><br>
+        <div style="margin-top: 1px;">
+            <button type="submit" class="btn-custom w-100 mt-4">Cadastrar</button>
+        </div>
+    </form>
+
+<script>
+    function enviarCadastro(event) {
+        event.preventDefault();  // Impede o envio tradicional do formulário
+
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        const data = {
+            data_nascimento: document.querySelector('[name=data_nascimento]').value,
+            cpf: document.querySelector('[name=cpf]').value,
+            telefone: document.querySelector('[name=telefone]').value,
+            cidade: document.querySelector('[name=cidade]').value,
+            tipo: document.querySelector('[name=tipo]').value,
+        };
+
+        fetch("{% url 'cadastro_google' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            alert(result.message);
+            if (result.success) {
+                window.location.href = "{% url 'home' %}";
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert("Erro ao enviar os dados.");
+        });
+    }
+
+    // Substitui o submit padrão pelo envio via JS
+    document.querySelector('form').addEventListener('submit', enviarCadastro);
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'Projeto/base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <h2>Editar Meu Perfil</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label>Email:</label><input type="email" name="email" value="{{ usuario.email }}"><br>
+        <label>Nova Senha:</label><input type="password" name="senha"><br>
+
+        <label>Nome:</label><input type="text" name="nome" value="{{ perfil.nome }}"><br>
+        <label>Telefone:</label><input type="text" name="telefone" value="{{ perfil.telefone }}"><br>
+        <label>Cidade:</label><input type="text" name="cidade" value="{{ perfil.cidade }}"><br>
+
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{% url 'home' %}">Cancelar</a>
+
+<script>
+    function enviarEditar(event) {
+        event.preventDefault();  // Impede o envio tradicional do formulário
+
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        const data = {
+            nome: document.querySelector('[name=nome]').value,
+            email: document.querySelector('[name=email]').value,
+            telefone: document.querySelector('[name=telefone]').value,
+            cidade: document.querySelector('[name=cidade]').value,
+            senha: document.querySelector('[name=senha]').value
+        };
+
+        fetch("{% url 'editar_perfil' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            alert(result.message);
+            if (result.success) {
+                window.location.href = "{% url 'login' %}";
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert("Erro ao enviar os dados.");
+        });
+    }
+
+    // Substitui o submit padrão pelo envio via JS
+    document.querySelector('form').addEventListener('submit', enviarEditar);
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'Projeto/base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div style="width: 100%; max-width: 600px;">
+        <h2>Login</h2>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <label for="email">Email:</label>
+            <input type="email" name="email" required>
+
+            <br><label for="senha">Senha:</label>
+            <input type="password" name="senha" required>
+
+            <!-- Alinhamento dos botões lado a lado -->
+            <!-- Botão de Login -->
+            <button type="submit">Login</button>
+
+            <!-- Botão de Login com Google -->
+            <a href="{% url 'social:begin' 'google-oauth2' %}" class="google-btn">
+                <img src="{% static 'Google_2015_logo.svg' %}" alt="Google logo">
+                Entrar com Google
+            </a>
+        
+            <!-- Links para cadastro e recuperação de senha -->
+            <a href="{% url 'cadastro' %}">Não tem conta? Cadastre-se</a>
+            <a href="{% url 'recuperar_senha' %}">Esqueceu a senha?</a>
+        </form>
+
+    </div>
+</div>
+
+    <script>
+        function enviarLogin(event) {
+            event.preventDefault();
+
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            const data = {
+                email: document.querySelector('[name=email]').value,
+                senha: document.querySelector('[name=senha]').value
+            };
+
+            fetch("{% url 'login' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert(result.message);
+                if (result.success) {
+                    window.location.href = result.redirect_url || "{% url 'home' %}";
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert("Erro ao enviar os dados.");
+            });
+        }
+
+        document.querySelector('form').addEventListener('submit', enviarLogin);
+    </script>
+{% endblock %}
